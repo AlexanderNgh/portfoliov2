@@ -1,7 +1,33 @@
-import Image from "next/image";
+'use client';
 import WindowComponent from "./components/window";
 import Taskbar from "./components/taskbar";
+import { Press_Start_2P } from 'next/font/google';
+import { useState } from "react";
+
+const logo_font = Press_Start_2P({
+  subsets:['latin'],
+  weight: ['400'],
+});
+
 export default function Home() {
+
+  const [openWindows, setOpenWindows] = useState<Record<string, boolean>>({});
+
+  const openWindow = (id: string) => {
+    setOpenWindows(function (previousValue: Record<string, boolean>) {
+      // Toggle the window state by checking if it's already open
+      return {
+        ...previousValue, // Spread the previous state
+        [id]: previousValue[id] ? false : true, // Toggle the specific window
+      };
+    });
+  };
+
+  const closeWindow = (name: string) => {
+    setOpenWindows(prev => ({ ...prev, [name]: false }));
+  };
+
+
   return (
     <div className="min-h-screen w-full flex flex-col pb-8 bg-image">
       <div className="flex justify-between bg-gray-200 px-4">
@@ -17,7 +43,8 @@ export default function Home() {
       </div>
 
       <div className="relative flex-grow w-full p-8">
-        <div className="absolute inset-0 flex justify-center items-center">
+        
+        <div className={`absolute inset-0 flex justify-center items-center ${logo_font.className}`}>
           <div className="flex flex-col items-center">
             <div>
               welcome to my portfolio
@@ -27,9 +54,61 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="relative z-10 bg-white">
-          HEY MAIN
+        {/* this is the main div we will have stuff in */}
+        <div className="relative z-10 flex justify-between">
+          <div className="grid grid-cols-2 space-x-8 space-y-8">
+            <div>
+              <img src="/assets/icons/folder.png" className="h-16"></img> About Me
+            </div>
+            <div>
+              <img src="/assets/icons/folder.png" className="h-16"></img> Machine Learning
+            </div>
+            <div>
+              <img src="/assets/icons/folder.png" className="h-16"></img> Research
+            </div>
+            <div>
+              <img src="/assets/icons/folder.png" className="h-16"></img> Work Experience
+            </div>
+            <div>
+              <img src="/assets/icons/folder.png" className="h-16"></img> Web Dev
+            </div>
+
+            <div className="col-span-2 row-span-2">
+              <div className="w-[300px] h-[300px] bg-amber-300 rounded-xl shadow p-4">
+                <div className="font-bold pb-2">TO DO LIST</div>
+                <div className="line-through pb-2">* graduate college with a computer science degree</div>
+                <div className="line-through pb-2">* get a research grant and study how to use machine learning to help doctors</div>
+                <div>* get my first client as a freelance web developer</div>
+              </div>
+            </div>
+
+            {/* <button onClick={() => openWindow('window1')}>CLICK ME</button>
+
+            <button onClick={() => openWindow('window2')}>CLICK ME2</button> */}
+          </div>
+          <div className="grid grid-cols-2 h-fit space-x-8 space-y-8">
+            <div>
+              <img src="/assets/icons/documents.png" className="h-16"></img> Resume
+            </div>
+            <div>
+              <img src="/assets/icons/documents.png" className="h-16"></img> Contact Info
+            </div>
+            <div>
+              <img src="/assets/icons/bin.png" className="h-16"></img> Trash
+            </div>
+          </div>
         </div>
+
+        {/* Overlay Windows */}
+        {openWindows.window1 && (
+          <WindowComponent id="window1">
+          </WindowComponent>
+        )}
+
+        {openWindows.window2 && (
+          <WindowComponent id="window2">
+          </WindowComponent>
+        )}
       </div>
       
       <div className="bottom-0 px-64">
