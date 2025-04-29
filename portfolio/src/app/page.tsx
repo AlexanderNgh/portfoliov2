@@ -5,16 +5,24 @@ import WindowComponent3 from "./components/window3";
 import Taskbar from "./components/taskbar";
 import { Press_Start_2P } from 'next/font/google';
 import { useState } from "react";
+import { AnimatePresence, motion } from 'framer-motion';
 
+// this is for the font, temporary until I find a better one
 const logo_font = Press_Start_2P({
   subsets:['latin'],
   weight: ['400'],
 });
 
 export default function Home() {
+  // text for one of the windows
+  const bioText = `Hello! My name is Alex. I recently graduated with a degree in computer science. Two of my main interests in school were machine learning and web development. This portfolio contains some of my favorite projects :D. Currently, I work as an analyst using mainly Python and SQL. But, I am exploring my freelance career, and I am looking to work with small businesses to help them make websites.`;
 
+  // state hook to manage which windows are open
   const [openWindows, setOpenWindows] = useState<Record<string, boolean>>({});
 
+  // openwindow
+  // given a string 
+  // call the setOpenWindows, which should update the state
   const openWindow = (id: string) => {
     setOpenWindows(function (previousValue: Record<string, boolean>) {
       // Toggle the window state by checking if it's already open
@@ -34,11 +42,12 @@ export default function Home() {
       return updatedState;
     });
   };
-
+  
   const closeWindow = (name: string) => {
     setOpenWindows(prev => ({ ...prev, [name]: false }));
   };
 
+  
 
   return (
     <div className="min-h-screen w-full flex flex-col pb-8 bg-image">
@@ -117,13 +126,15 @@ export default function Home() {
         </div>
 
         {/* Overlay Windows */}
-        {openWindows.window1 && (
-          <WindowComponent id="window1" flag={true} left={110} top={200}>
-          </WindowComponent>
-        )}
 
+        <AnimatePresence>
+          {openWindows.window1 && (
+            <WindowComponent id="window1" flag={true} left={110} top={200} text={bioText}>
+            </WindowComponent>
+          )}
+        </AnimatePresence>
         {openWindows.window2 && (
-          <WindowComponent id="window2" flag={false} left={1000} top={10}>
+          <WindowComponent id="window2" flag={false} left={1000} top={10} text=''>
           </WindowComponent>
         )}
 
