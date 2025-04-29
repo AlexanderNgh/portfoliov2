@@ -1,5 +1,7 @@
 'use client';
 import WindowComponent from "./components/window";
+import WindowComponent2 from "./components/window2";
+import WindowComponent3 from "./components/window3";
 import Taskbar from "./components/taskbar";
 import { Press_Start_2P } from 'next/font/google';
 import { useState } from "react";
@@ -20,6 +22,16 @@ export default function Home() {
         ...previousValue, // Spread the previous state
         [id]: previousValue[id] ? false : true, // Toggle the specific window
       };
+    });
+  };
+
+  const multipleWindows = (ids: string[]) => {
+    setOpenWindows(prev => {
+      const updatedState = { ...prev };
+      ids.forEach(id => {
+        updatedState[id] = !updatedState[id]; // Toggle based on latest state
+      });
+      return updatedState;
     });
   };
 
@@ -45,7 +57,7 @@ export default function Home() {
       <div className="relative flex-grow w-full p-8">
         
         <div className={`absolute inset-0 flex justify-center items-center ${logo_font.className}`}>
-          <div className="flex flex-col items-center">
+          <div className="hidden lg:w-full lg:h-full lg:flex lg:flex-col lg:items-center lg:justify-center">
             <div>
               welcome to my portfolio
             </div>
@@ -54,10 +66,15 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {Object.values(openWindows).some(isOpen => isOpen) && (
+          <div className="fixed inset-0 bg-black opacity-20 z-10"></div>
+        )}
+
         {/* this is the main div we will have stuff in */}
-        <div className="relative z-10 flex justify-between">
-          <div className="grid grid-cols-2 space-x-8 space-y-8">
-            <div>
+        <div className="relative z-10 flex flex-col lg:justify-between lg:flex-row">
+          <div className="grid grid-cols-2 space-x-8 space-y-8 pb-4">
+            <div onClick={() => multipleWindows(['window1', 'window2', 'window3'])}>
               <img src="/assets/icons/folder.png" className="h-16"></img> About Me
             </div>
             <div>
@@ -73,7 +90,7 @@ export default function Home() {
               <img src="/assets/icons/folder.png" className="h-16"></img> Web Dev
             </div>
 
-            <div className="col-span-2 row-span-2">
+            <div className="col-span-2 row-span-2 pb-4">
               <div className="w-[300px] h-[300px] bg-amber-300 rounded-xl shadow p-4">
                 <div className="font-bold pb-2">TO DO LIST</div>
                 <div className="line-through pb-2">* graduate college with a computer science degree</div>
@@ -101,14 +118,19 @@ export default function Home() {
 
         {/* Overlay Windows */}
         {openWindows.window1 && (
-          <WindowComponent id="window1">
+          <WindowComponent id="window1" flag={true} left={110} top={200}>
           </WindowComponent>
         )}
 
         {openWindows.window2 && (
-          <WindowComponent id="window2">
+          <WindowComponent id="window2" flag={false} left={1000} top={10}>
           </WindowComponent>
         )}
+
+        {/* {openWindows.window3 && (
+          <WindowComponent2 id="window3" flag={true} left={750} top={10}>
+          </WindowComponent2>
+        )} */}
       </div>
       
       <div className="bottom-0 px-64">

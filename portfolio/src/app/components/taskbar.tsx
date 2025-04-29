@@ -6,7 +6,7 @@ type taskbarprops = {
 
 const Taskbar: React.FC<taskbarprops> = ({ text }) => {
   return (
-    <div className='w-full h-20 bg-gray-200 rounded-3xl shadow p-4 px-16 flex justify-evenly'>
+    <div className='hidden lg:w-full lg:h-20 lg:bg-gray-200 lg:rounded-3xl lg:shadow lg:p-4 lg:px-16 lg:flex lg:justify-evenly'>
         <img src="/assets/icons/facetime.png" 
             className='h-full hover-grow-up'></img>
         <img src="/assets/icons/messages.png" 
