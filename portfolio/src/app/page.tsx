@@ -33,6 +33,8 @@ export default function Home() {
     });
   };
 
+  // this function opens multiple windows
+  //. given a list of strings, update the key in the state
   const multipleWindows = (ids: string[]) => {
     setOpenWindows(prev => {
       const updatedState = { ...prev };
@@ -76,6 +78,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* this makes the background gray when we open windows */}
         {Object.values(openWindows).some(isOpen => isOpen) && (
           <div className="fixed inset-0 bg-black opacity-20 z-10"></div>
         )}
@@ -127,21 +130,23 @@ export default function Home() {
 
         {/* Overlay Windows */}
 
+        
         <AnimatePresence>
-          {openWindows.window1 && (
-            <WindowComponent id="window1" flag={true} left={110} top={200} text={bioText}>
-            </WindowComponent>
-          )}
+            {openWindows.window1 && (
+              <WindowComponent id="window1" flag={true} left={110} top={200} text={bioText} idVar="window1" onClose={closeWindow}>
+              </WindowComponent>
+            )}
         </AnimatePresence>
-        {openWindows.window2 && (
-          <WindowComponent id="window2" flag={false} left={1000} top={10} text=''>
-          </WindowComponent>
-        )}
+          
+        <AnimatePresence>
+            {openWindows.window2 && (
+              <WindowComponent id="window2" flag={false} left={1000} top={10} text='' idVar="window2" onClose={closeWindow}>
+              </WindowComponent>
+            )}
+        </AnimatePresence>
+        
 
-        {/* {openWindows.window3 && (
-          <WindowComponent2 id="window3" flag={true} left={750} top={10}>
-          </WindowComponent2>
-        )} */}
+
       </div>
       
       <div className="bottom-0 px-64">

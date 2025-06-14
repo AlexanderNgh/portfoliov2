@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-
+import { useEffect } from 'react';
 // this is to set the type of the props
 type WindowComponentProps = {
   id: string;
@@ -8,20 +8,30 @@ type WindowComponentProps = {
   left:number;
   top:number;
   text: string;
+  idVar: string;
+  onClose: (id: string) => void;
 };
 
 // random time function
 const getRandomDuration = () => Math.random() * (0.7 - 0.1) + 0.1;
 
 //actual component
-const WindowComponent: React.FC<WindowComponentProps> = ({ id, flag, left, top, text }) => {
+const WindowComponent: React.FC<WindowComponentProps> = ({ id, flag, left, top, text, idVar, onClose }) => {
+    
+    useEffect(() => {
+        if(window.innerWidth <=1000)
+            {
+                left = 10;
+            }
+    })
+
     // for the positioning of the components
     const windowStyle = {
         left: `${left}px`,
         top: `${top}px`,
       };
     // get a time
-    const time = getRandomDuration()
+    const time = 0.05
 
     // if true then its a text window, else its an image, text should be the text inside as well as the img src
     if(flag){
@@ -40,6 +50,7 @@ const WindowComponent: React.FC<WindowComponentProps> = ({ id, flag, left, top, 
                 
                 <div className={`absolute h-fit w-full z-30`} style={windowStyle}>
                     <img
+                        onClick={() => {onClose(idVar)}}
                         className='w-full rounded-t-lg'
                         src="/assets/windowbar.png">
                     </img>
@@ -59,6 +70,7 @@ const WindowComponent: React.FC<WindowComponentProps> = ({ id, flag, left, top, 
             transition={{ duration: time }}>
                 <div className={`absolute h-fit w-full z-30`} style={windowStyle}>
                     <img
+                        onClick={() => {onClose(idVar)}}
                         className='w-full rounded-t-lg'
                         src="/assets/windowbar.png">
                     </img>
